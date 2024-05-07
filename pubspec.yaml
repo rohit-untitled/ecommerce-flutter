@@ -19,7 +19,7 @@ publish_to: "none" # Remove this line if you wish to publish to pub.dev
 version: 1.0.0+1
 
 environment:
-  sdk: ">=3.0.5 <4.0.0"
+  sdk: ">=3.2.5 <4.0.0"
 
 # Dependencies specify other packages that your package needs in order to work.
 # To automatically upgrade your package dependencies to the latest versions
@@ -33,11 +33,13 @@ dependencies:
 
   # utility packages
   url_launcher: ^6.2.5
-  flutter_native_splash: ^2.3.11
   smooth_page_indicator: ^1.1.0
   http: ^1.1.0
   intl: ^0.18.1
   logger: ^2.0.1
+  lottie: ^3.1.0
+  connectivity_plus: ^5.0.1
+  flutter_native_splash: ^2.3.10
 
   # Icons
   iconsax: ^0.0.8
@@ -52,6 +54,11 @@ dependencies:
   carousel_slider: ^4.2.1
   flutter_rating_bar: ^4.0.1
   capped_progress_indicator: ^0.0.2
+
+  # Firebase
+  firebase_core: ^2.23.0
+  firebase_auth: ^4.14.0
+  cloud_firestore: ^4.13.1
 
 dev_dependencies:
   flutter_test:
