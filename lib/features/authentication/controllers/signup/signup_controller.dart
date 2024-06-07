@@ -50,20 +50,21 @@ class SignupController extends GetxController {
       //privacy policy check
       if (!privacyPolicy.value) {
         TLoaders.warningSnackBar(
-            title: 'Accept Privacy Policy',
-            message:
-                'In order to create account, you must have to read and accept Privacy Policy & Terms of use.');
+          title: 'Accept Privacy Policy',
+          message:
+              'In order to create account, you must have to read and accept Privacy Policy & Terms of use.',
+        );
         return;
       }
 
       //Register user in the firebase authentication and save user data in the firebase
-      final UserCredential = await AuthenticationRepository.instance
+      final userCredential = await AuthenticationRepository.instance
           .registerWithEmailAndPassword(
               email.text.trim(), password.text.trim());
       //save authenticated user data
 
       final newUser = UserModel(
-        id: UserCredential.user!.uid,
+        id: userCredential.user!.uid,
         firstName: firstName.text.trim(),
         lastName: lastName.text.trim(),
         username: username.text.trim(),
@@ -82,8 +83,8 @@ class SignupController extends GetxController {
           title: 'Congratulations',
           message: 'Your account has been created! Verify email to continue.');
 
-      //move to verify to email screen
-      Get.to(() => VerifyEmailScreen(email: email.text.trim()));
+      //move to verify email screen
+      Get.to(() =>  VerifyEmailScreen(email: email.text.trim()));
     } catch (e) {
       // remove loader
       TFullScreenLoader.stopLoading();

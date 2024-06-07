@@ -24,7 +24,7 @@ class TAppTheme {
     inputDecorationTheme: TTextFormFieldTheme.lightInputDecorationTheme,
     elevatedButtonTheme: TElevatedButtonTheme.lightElevatedButtonTheme,
   );
-  static ThemeData dartTheme = ThemeData(
+  static ThemeData darkTheme = ThemeData(
     useMaterial3: true,
     fontFamily: 'Poppins',
     brightness: Brightness.dark,

@@ -1,11 +1,9 @@
 import 'dart:async';
-
 import 'package:e_commerce/common/widgets/success_screen/success_screen.dart';
 import 'package:e_commerce/utils/constants/image_strings.dart';
 import 'package:e_commerce/utils/constants/text_strings.dart';
 import 'package:e_commerce/utils/popups/loaders.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:get/get.dart';
 
 import '../../../../data/repositories/authentication/authentication_repository.dart';
@@ -18,6 +16,7 @@ class VerifyEmailController extends GetxController {
   void onInit() {
     sendEmailVerification();
     setTimerForAutoRedirect();
+    
     super.onInit();
   }
 
@@ -26,7 +25,7 @@ class VerifyEmailController extends GetxController {
     try {
       await AuthenticationRepository.instance.sendEmailVerification();
       TLoaders.successSnackbar(
-          title: 'Oh Snap!',
+          title: 'Email sent',
           message: 'Please check your inbox and verify your mail');
     } catch (e) {
       TLoaders.errorSnackBar(title: 'Oh Snap!', message: e.toString());

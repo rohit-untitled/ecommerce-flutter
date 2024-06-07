@@ -6,10 +6,12 @@ import 'package:e_commerce/utils/exceptions/firebase_auth_exceptions.dart';
 import 'package:e_commerce/utils/exceptions/format_exceptions.dart';
 import 'package:e_commerce/utils/exceptions/platform_exceptions.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 class AuthenticationRepository extends GetxController {
   static AuthenticationRepository get instance => Get.find();
@@ -28,7 +30,7 @@ class AuthenticationRepository extends GetxController {
   }
 
   // function to show relevant screen
-  screenRedirect() async {
+  void screenRedirect() async {
     final user = _auth.currentUser;
 
     if (user != null) {
@@ -48,7 +50,7 @@ class AuthenticationRepository extends GetxController {
           ? Get.offAll(() =>
               const LoginScreen()) // redirect to login screen if not the first time
           : Get.offAll(
-              const OnBoardingScreen()); // redirec to the onboarding screen if its the first time
+              const OnBoardingScreen()); // redirect to the onboarding screen if its the first time
     }
   }
 
@@ -113,9 +115,52 @@ class AuthenticationRepository extends GetxController {
   }
   // reauthenticate user
   // Email Authentication - forget password
+  Future<void> sendPasswordResetEmail(String email) async {
+    try {
+      await _auth.sendPasswordResetEmail(email: email);
+    } on FirebaseAuthException catch (e) {
+      throw TFirebaseAuthException(e.code).message;
+    } on FirebaseException catch (e) {
+      throw TFirebaseAuthException(e.code).message;
+    } on FormatException catch (_) {
+      throw const TFormatException();
+    } on PlatformException catch (e) {
+      throw TPlatformException(e.code).message;
+    } catch (e) {
+      throw 'Something went wrong. Please try again';
+    }
+  }
 
   /*----------------------------social signin--------------------------*/
   // Google
+  Future<UserCredential?> signInWithGoogle() async {
+    try {
+      // trigger the authentication flow
+      final GoogleSignInAccount? userAccount = await GoogleSignIn().signIn();
+
+      // obtain the auth details from the requests
+      final GoogleSignInAuthentication? googleAuth =
+          await userAccount?.authentication;
+
+      //create a new credentials
+      final credentials = GoogleAuthProvider.credential(
+          accessToken: googleAuth?.accessToken, idToken: googleAuth?.idToken);
+
+      // once signed in , return the user credentials
+      return await _auth.signInWithCredential(credentials);
+    } on FirebaseAuthException catch (e) {
+      throw TFirebaseAuthException(e.code).message;
+    } on FirebaseException catch (e) {
+      throw TFirebaseAuthException(e.code).message;
+    } on FormatException catch (_) {
+      throw const TFormatException();
+    } on PlatformException catch (e) {
+      throw TPlatformException(e.code).message;
+    } catch (e) {
+      if (kDebugMode) print('Something went wrong: $e');
+      return null;
+    }
+  }
   // Facebook
 
   /* --------------------------federated identity ----------------------- */
@@ -124,6 +169,7 @@ class AuthenticationRepository extends GetxController {
 
   Future<void> logout() async {
     try {
+      await GoogleSignIn().signOut();
       await FirebaseAuth.instance.signOut();
       Get.offAll(() => const LoginScreen());
     } on FirebaseAuthException catch (e) {

@@ -14,10 +14,10 @@ Future<void> main() async {
   //get x local storage
   await GetStorage.init();
   //await native splash untill item loads
-  FlutterNativeSplash.preserve(widgetsBinding:widgetsBinding);
-  //initialize firebase
+  FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
+  //initialize firebase and authentication repository
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform)
-  .then((FirebaseApp value) => Get.put(AuthenticationRepository()));
-  //initialize authentication
+      .then((FirebaseApp value) => Get.put(AuthenticationRepository()));
+  //load all the material design / themes / bindings / localizations
   runApp(const MyApp());
 }

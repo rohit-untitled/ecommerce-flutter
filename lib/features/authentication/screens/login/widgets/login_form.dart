@@ -37,7 +37,8 @@ class TLoginForm extends StatelessWidget {
             Obx(
               () => TextFormField(
                 controller: controller.password,
-                validator: (value) => TValidator.validatePassword(value),
+                validator: (value) =>
+                    TValidator.validateEmptyText('Password', value),
                 obscureText: controller.hidePassword.value,
                 decoration: InputDecoration(
                   labelText: TTexts.password,
@@ -62,9 +63,10 @@ class TLoginForm extends StatelessWidget {
                 Row(
                   children: [
                     Obx(
-                      ()=> Checkbox(
+                      () => Checkbox(
                           value: controller.rememberMe.value,
-                          onChanged: (value) => controller.rememberMe.value = !controller.rememberMe.value),
+                          onChanged: (value) => controller.rememberMe.value =
+                              !controller.rememberMe.value),
                     ),
                     const Text(TTexts.rememberMe),
                   ],
@@ -80,7 +82,8 @@ class TLoginForm extends StatelessWidget {
             SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(
-                    onPressed: () => Get.to(() => controller.emailAndPasswordSignIn()),
+                    onPressed: () =>
+                         controller.emailAndPasswordSignIn(),
                     child: const Text(TTexts.signIn))),
 
             const SizedBox(height: TSizes.spaceBtwItems),
